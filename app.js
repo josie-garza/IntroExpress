@@ -20,6 +20,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html')); // bad practice because file system is different on OS
 });
 
+// app.get('/puppies/update', (req, res) => {
+//     res.sendFile(path.join(__dirname, './public/update.html')); // bad practice because file system is different on OS
+// });
+
 app.get('/puppies', (req, res) => {
   // res.send('<h1>Hello Darkness</h1>')
   res.send(puppies);
@@ -40,6 +44,24 @@ app.post('/puppies', (req, res) => {
     name,
     age
   })
+  res.send(puppies);
+});
+
+app.put('puppies/:id', (req, res) => {
+  let puppyId = Number(req.params.id)-1;
+  if (puppyId) {
+  puppyId.age = Number(req.body.age) || puppyId.age;
+  puppyId.name = req.body.name || puppyId.name;
+  }
+  else {
+    res.sendStatus(403);
+  }
+  res.send(puppies);
+});
+
+app.delete('/puppies/:id', (req, res) =>{
+  puppies.splice(Number(req.param.id)-1, 1);
+  res.sendStatus(203);
   res.send(puppies);
 });
 
